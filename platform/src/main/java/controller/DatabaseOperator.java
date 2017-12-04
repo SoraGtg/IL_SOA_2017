@@ -1,14 +1,17 @@
-package model;
+package controller;
 
 import java.sql.*;
 
-public class UsersList {
+import model.User;
+import model.UserDoesNotExistException;
+
+public class DatabaseOperator {
 
 	private String dbURL = "jdbc:postgresql://baasu.db.elephantsql.com:5432/kyzksfba";
 	private String dbUsername = "kyzksfba";
 	private String dbPassword = "eOpz1rPDBSMo7fICNIu6Otj47Rc7rKdd";
 
-	public UsersList() {
+	public DatabaseOperator() {
 		// Nothing to do ???
 	}
 	

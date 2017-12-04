@@ -2,17 +2,19 @@ package model;
 
 import java.sql.SQLException;
 
+import controller.DatabaseOperator;
+
 public class User {
 	
-	private UsersList userList ; // We have to keep this, in order to test password later
+	private DatabaseOperator dbo ; // We have to keep this, in order to test password later
 	
 	private int id ;
 	private String username ;
 	private int usertype ;
 	private boolean isLoggedIn ;
 	
-	public User(UsersList userList, int id, String username, int usertype) throws UserDoesNotExistException {
-		this.userList = userList ;
+	public User(DatabaseOperator dbo, int id, String username, int usertype) throws UserDoesNotExistException {
+		this.dbo = dbo ;
 		this.id = id;  
 		this.username = username ;
 		this.usertype = usertype ;
@@ -20,7 +22,7 @@ public class User {
 	}
 	
 	public boolean testPassword(String password) throws UserDoesNotExistException, SQLException, ClassNotFoundException {
-		return this.userList.testPassword(this.id, password) ;
+		return this.dbo.testPassword(this.id, password) ;
 	}
 	
 	
