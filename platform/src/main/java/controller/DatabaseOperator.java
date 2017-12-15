@@ -28,8 +28,8 @@ public class DatabaseOperator {
 		
 	}
 	
-	public void disconnectFromDatabase() {
-		
+	public void disconnectFromDatabase() throws SQLException {
+		this.db.close();
 	}
 	
 	public User getUser(String username) throws UserDoesNotExistException, SQLException  {
@@ -39,7 +39,7 @@ public class DatabaseOperator {
 		int usertype;
 
         // Declaration of variables needed  for connection to database
-        Statement st = db.createStatement();
+        Statement st = this.db.createStatement();
         ResultSet rs = st.executeQuery("SELECT * FROM users WHERE username = " + username);
         // Autre possibilité : PreparedStatement requete = db.prepareStatement("SELECT * FROM users WHERE username = ?");
         if (rs.next()) {
@@ -49,13 +49,12 @@ public class DatabaseOperator {
         	// If nothing was found, close connection before raising an error
             rs.close();
             st.close();
-            db.close();
+            
         	throw new UserDoesNotExistException() ;
         }
         // NB : we do not test if there is a second entry, because username is declared as UNIQUE in the database
         rs.close();
         st.close();
-        db.close();
         
         // Finally, we can make a new User and return it.
 		return new User(this, id, username, usertype);
@@ -68,8 +67,7 @@ public class DatabaseOperator {
     	//org.postgresql.Driver driver = new org.postgresql.Driver() ;
 
         // Declaration of variables needed  for connection to database
-        Connection db = DriverManager.getConnection(this.dbURL, this.dbUsername, this.dbPassword);
-        Statement st = db.createStatement();
+        Statement st = this.db.createStatement();
         ResultSet rs = st.executeQuery("SELECT * FROM users WHERE id = " + Integer.toString(id) );
         // Autre possibilité : PreparedStatement requete = db.prepareStatement("SELECT * FROM users WHERE username = ?");
         if (rs.next()) {
@@ -80,13 +78,11 @@ public class DatabaseOperator {
         	// If nothing was found, close connection before raising an error
             rs.close();
             st.close();
-            db.close();
         	throw new UserDoesNotExistException() ;
         }
         // NB : we do not test if there is a second entry, because id is declared as a KEY in the database
         rs.close();
         st.close();
-        db.close();
         
 		return pwdOK ;
 	}
